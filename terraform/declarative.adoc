@@ -1,0 +1,12 @@
+= Declarative vs Impertative Approach
+
+Es gibt zwei Möglichkeiten die Infrastruktur mithilfe von Code zu beschreiben. Die eine bedient sich eines prozedural bzw. imperativen Ansatzes. Die andere eines deklarativen.
+
+_Ansible_ footnote:[https://ansible.com], welches seit 2012 existiert, ist ein anderes weitverbreitetes Management Tool zur Verwaltung von Infrastrukturen. Es setzt auf Konfigurationsdateien mit einer imperativen _yaml_-Struktur: _yaml_ ist eine _json_-ähliche Sprache, von der Syntax her jedoch weniger verbose und damit einfacher zu lesen. Den prozeduralen Ansatz kann man sich wie ein Rezept vorstellen, bei dem die Reihenfolge, in der man die Zutaten verarbeitet, eine große Rolle spielt um ein schmackhaftes Essen zuzubereiten.
+
+Terraform bedient sich des deklarativen Ansatzes, bei dem die Reihenfolge, also wie und wo Konfigurationen hinterlegt werden, keine Rolle spielt. Abhängigkeiten zwischen einzelnen Konfigurationen werden von Terraform selbstständig aufgelöst, das bedetet dieser Prozess muss vor der eigentlichen Anwendung passieren.
+
+[NOTE]
+====
+Allgemein gibt es kein *besser* oder *schlechter*, beide Ansätze haben ihre Vor- und Nachteile. Manchmal ist es einfacher ein Kochrezept zu lesen, v.a. wenn es nicht zu aufwändig ist. In anderen Fällen reicht eine Übersicht der Zutaten aus, um ein gutes Essen auf den Tisch zu bekommen.
+====

@@ -1,0 +1,17 @@
+= Mutable vs Immutable
+
+Ein weiterer Unterschied zwischen Ansible und Terraform ist, wie die Tools Änderungen an einer laufenden Instanz anwenden. Es gibt zwei Möglichkeiten: die Infrastruktur on-the-fly zu verändern oder sie zu ersetzen.
+
+Terraform favorisiert eine unveränderbare Infrastruktur, das heißt in der Regel werden laufende Resourcen "zerstört" und durch neue ersetzt. Es gibt aber auch Ausnahmen, in denen es nicht nötig ist.
+
+Ansible auf der anderen Seite wendet bei jedem Durchlauf die Konfiguration an. Bei einer Konfigurationsänderung wird diese also angewandt, ohne dass Ansible die bisherige ersetzt.
+
+Der Vorteil einer unverönderbaren Infrastruktur liegt darin, dass die Umgebung jederzeit vorhersehbar und reproduzierbar erstellt werden kann. Auf der anderen Seite gibt es jedoch den Nachteil, dass gewisse Resourcen, die sich oft ändern, jedes Mal neu erzeugt werden, was beispielsweise im Falle von VPCs oder Firewalls eher ungünstig ist.
+
+Im Allgemeinen ist eine unveränderbare Infrastruktur vorzuziehen.
+Andererseits treten Änderungen beispielsweise innerhalb eines Netzwerks öfter auf, unterliegen also ständig Veränderungen.
+
+[CAUTION]
+====
+Man sollte sich zuvor im Klaren sein, welches Tool für welchen Zweck besser geeignet ist. In einigen Fällen ist es Terraform in anderen Ansible. Eine Kombination beider Tools mag daher die bessere Lösung sein.
+====

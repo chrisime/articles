@@ -1,0 +1,12 @@
+= Before we start
+
+Terraform footnote:[https://terraform.io] ist eines der bekannteren und vielfach eingesetzten Management Tools dies es einem ermöglichen, die Infrastruktur in Form durch Code (_Infrastructure as Code_) zu beschreiben. HashiCorp stellte Terraform 2014 vor und seitdem hat es immer mehr an Popularität gewonnen. Die Beschreibungssprache _HCL_ footnote:[https://github.com/hashicorp/hcl] (kurz für _HashiCorp Configuration Language_) orientiert sich stark an _JSON_ und ist sehr einfach zu erlernen. Es ist auch möglich, die Konfiguration in _JSON_ footnote:[https://www.terraform.io/language/syntax/json] zu schreiben. Aufgrund der Verbosity der Syntax ist jedoch ein größrere Schreibaufwand erforderlich.
+
+Mit das größte Hauptanwendungsgebiet von Terraform ist die Konfiguration von Cloud-Infrastrukturen, so dass automatisch, das heißt ohne großen Mehraufwand beispielsweise eine neue Umgebung in nur wenigen Minuten zur Verfügung gestellt werden kann.
+
+_HCL_ macht es zudem möglich, dass DevOps-Aufgaben einfacher von Entwickler-Teams übernommen weren können. Dies ist ein seit Jahren anhaltender Trend. Probleme in der Infrastuktur lassen sich schneller und gezielter lösen: Andere Teams müssen nicht erst durch einen langwierigen Prozess mit der Problemlösung beauftragt werden.
+
+[NOTE]
+====
+Terraform und die dazugehörige Sprache _HCL_ ist Open Source und kann daher im Rahmen der _MPL-2.0_ Lizenz footnote:[https://www.mozilla.org/en-US/MPL/2.0/] beliebig erweitert, verändert oder in eigene Produkte integriert werden.
+====

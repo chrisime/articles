@@ -1,0 +1,12 @@
+= Stateful vs Stateless
+
+Ansible und Terraform verhalten sich grundlegend anders was den aktuallen Zustand einer Cloud-Infrastruktur bzw. Servers betrifft. Ansible ist zustandslos, das bedeutet es weiß nicht darüber bescheid, wie der aktuelle Zustand des Servers ist. Den Zustand lässt sich jedoch anhand der Konfiguration ablesen, denn das "Kochrezept" gibt vor, wie etwas und was von Ansible ausgeführt, installiert oder konfiguriert werden soll. Allerdings kann man nicht wissen, wie erfolgreich der letzte Durchlauf war. Es kann also sein, dass das "Kochrezept" nicht den wirklichen Zustand widerspiegelt. Über Workarounds kann man den aktuellen Zustand jedoch herausfinden.
+
+Terraform setzt auf der anderen Seite auf eine dediziertes Zustandsverwaltung. Das heißt die letzte Ausführung wird in einer Datei aufbewahrt. Falls eine Änderung die eigentliche Infrastruktur nicht beeinflusst, weiß Terraform also, dass nichts zu tun ist.
+
+Abgesehen von den Vorzügen einer Zustandsverwaltung kann es dazu kommen, dass der Zustand der Infrastruktur mit dem was Terraform darüber weiß auseiander driftet. Dies passiert, wenn ein Entwickler die Infrastruktur direkt, also an Terraform oder Ansible vorbei, verändert. Dieser Drift lässt sich jedoch beseitigen indem man manuell den Zustand den Terraform kennt mit dem der Infrastruktur abgleicht.
+
+[IMPORTANT]
+====
+Niemals die Infrastruktur direkt verändern, sofern Tools wie Ansible oder Terraform zum Einsatz kommen. Die Konsequenz ist ein erheblicher Mehraufwand, um den Zustand zu synchronisieren. Außerdem widerspricht es dem Konzept _Infrastructure as Code_
+====

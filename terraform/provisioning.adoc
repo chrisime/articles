@@ -1,0 +1,27 @@
+= Orchestration and Configuration Management
+
+Je nach Anforderung ist Terraform oder Ansible der geeignetere Kandidat. Zur besseren Verständlichkeit was Konfigurationsmanagement bzw. Orchestration bedeutet stelle ich hier ein paar Beispiele vor und erkläre kurz, welches Tool passender ist.
+
+Nur soviel vorab, was die beiden Begriffe bedeuten -- Konfigurationmanagement bedeutet dass sich das Tool, etwa Ansible um die Automatisierung der Konfiguration von Ressourcen, sei es Hardware oder Software kümmert.
+
+Orchestration bedeutet im weitesten Sinne, dass sich das Tool um das Lifecycle-Management einer Umgebung/Infrastruktur kümmert. Änderungen an der Infrastruktur die in HCL "programmiert" sind, führt Terraform mithilfe der Infrastruktur-API, die AWS oder GCP bereitstellt, automatisch durch.
+
+== On-Premise
+
+Bei der Verwaltung eigener Server-Landschaften ist zu beachten, dass u.a. Benutzer, die Absicherung des Netzwerks bzw. das Deployment von Backends mit einer der wichtigsten Aufgaben ist. Der Server wird in der Regel von Rechenzentren mit einem vorinstalliertem Betriebssystem -- in der Regel Linux icon:linux[1x] -- bereitgestellt. Es geht also darum, die Firewalls ausreichend gut zu konfiguieren, Benutzer bzw. Benutzergruppen zu erstellen, Pakete zu installieren und Services zu konfigurieren. Hier steht also die Konfiguration eines oder mehrerer Server im Vordergrund. Ansible ist hier das passendere Tool.
+
+== Cloud-Infrastruktur
+
+Konfiguration von virtuellen Server-Instanzen, Auswahl des geeigneten Betriebssystem-Image, Konfiguration von Buckets und andere Resourcen steht hier im Vordergrund. Über das vom Cloud-Anbieter zur Verfügung gestellte SDK hat man die Möglichkeit den virtuellen Server zu konfigurieren ohne sich erst bei der Instanz anzumelden und Befehle im Terminal auszuführen. Hier ist Terraform klar im Vorteil, da es reproduzierbar die Umgebung bereitstellt. Die Instanz kann auch sehr einfach horizontal skaliert werden, sofern die gegenwärtige Kapazität nicht mehr ausreicht.
+
+
+== Office Equipment
+
+Laptops oder Büro-Computer können ähnlich wie Server einfach zentral per Ansible verwaltet und konfiguriert werden, um eine Firmen-Policy zu garantieren. Auch hier steht die Benutzer-Administration, die Installation von Anwendungen oder die Absicherung durch eine Firewall im Vordergrund.
+
+[TIP]
+====
+Terraform ist also vor allem darauf spezialisiert eine Cloud-Infrastruktur bereitzustellen, wohingegen Ansible eher dazu gedacht ist, bei einer bestehenden On-Premise-Infrastruktur mit vorinstalliertem Betriebssystem die Konfiguration zu automatisieren.
+
+Wie immer gilt jedoch: *Ausnahmen bestätigen die Regel*
+====

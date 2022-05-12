@@ -1,0 +1,22 @@
+= Introduction to Terraform
+:author: Christian Meyer
+:email: christian@openvalue.de
+:revnumber: 1.0
+:revdate: {docdate}
+:description: Intro to Terraform, all you need to know to get started
+:keywords: terraform, hcl, IaC, infrastructure as code, provisioning, orchestration, cloud, management
+:url-repo: https://github.com/chrisime/articles/terraform
+:icons: image
+:source-highlighter: coderay
+
+image::./images/tf_logo.png["terraform logo", 500, float=center]
+
+include::./intro.adoc[leveloffset=+1]
+
+include::./iac.adoc[leveloffset=+1]
+
+include::./basics.adoc[leveloffset=+1]
+
+include::./commands.adoc[leveloffset=+1]
+
+include::./about.adoc[]

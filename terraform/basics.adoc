@@ -1,0 +1,157 @@
+= Terraform basics
+
+Ein Terraform Script besteht aus nur wenigen Elementen. Diese sind recht schnell zu erlernen. Auch die Syntax, die der von _json_ sehr ähnelt ist nicht schwierig.
+
+Im wesentlichen ist ein funktionsfähiges Script aus nur zwei Elementen aufgebaut: einem oder mehreren _Providern_ und den _Resourcen_. Kompliziertere Scripte beinhalten _Data_ und andere Elemente. Um eine aussagekräftigere Ausgabe zu erhalten gibt es _Output_. Um ein Terraform Script frei von hard-coded Werten zu halten, bietet sich das Element _Variable_.
+
+Im folgenden werde ich kurz die o.g. Elemente -- das sind die wichtigsten -- vorstellen. Mit dem dann gesammelten Wissen stelle ich im darauffolgenden Absatz ein komplexeres Beispiele vor, dass eine Cloud-Infrastruktur konfiguriert.
+
+== HCL ==
+
+Zu allererst jedoch eine sehr kurze Einführung in die *HashiCorp Configuration Language*. Wie eingangs gesagt, ist die Sprache eng mit _json_ verwandt. Genauso gut ließe sich ein Terraform Script auch mit _json_ schreiben, wenngleich der Aufwand höher ist.
+Ein Block innerhalb eines Scripts besteht aus einem Header und einem Body. Der Haeder ist folgendermaßen aufgebaut:
+
+```
+<BLOCK TYPE> "<BLOCK LABEL>" "<BLOCK LABEL>"
+```
+
+Dabei bezeichnet der `BLOCK TYPE` z.B. einen Provider oder eine Resource.
+
+Der Body ist beinahe gleich aufgebaut wie bei _json_. Anders als bei _json_ verwendet _HCL_ keinen Doppelpunkt sondern ein Gleichheitszeichen für die Zuweisung.
+
+```
+<IDENTIFIER> = <EXPRESSION>
+```
+
+Ein valides HCL-Beispiel ist:
+
+```json
+variable "foo" "bar" {
+    id = 123
+}
+```
+
+Verschachtelte Blöcke lassen sich in _HCL_ wesentlich kompakter schreiben als mit _json_, wie wir gleich anhand eines Beispieles sehen werden.
+
+== Provider
+
+Ein Terraform Script muss angeben, welche Provider es benötigt. Ein Provider kann man sich wie eine API vorstellen. Ohne Provider kann Terraform keinerlei Infrastruktur verwalten. Provider interagieren also mit einer Cloud- oder On-Premise Infrastruktur. Die Konfiguration eines Providers muss im _root_ Verzeichnis stehen. Auch die benötigten Provider und die Version muss sich dort befinden. Hier ein kurzes und unvollständiges Beispiel
+
+```json
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = ">= 2.16.0"
+    }
+  }
+}
+
+...
+
+provider "docker" {
+}
+```
+
+Das Script fordert an, dass der Provider _docker_ in mindestens der Version `2.16.0` benötigt wird. Der Provider selbst ist nicht näher konfiguriert.
+
+== Resource
+
+Resourcen beschreiben Objekte einer Infrastruktur und sind somit die wichtigsten Elemente innerhaln eines Scripts. Jede Resource wird von einem Provider implementiert und stellt, je nach Typ, eine Vielzahl von Einstellungsmöglichkeiten bereit. In Terraform gibt es eine Reihe von Meta-Argumenten, etwa `depends_on` um explizit anzugeben, welche Resource von einer anderen abhängt. Dies ist nicht unbedingt erforderlich, da Terraform selständig Abhängigkeiten auflöst, kann aber zu einem besseren Verständnis bzw. Überblick bei größeren Scripten führen.
+
+```json
+resource "docker_image" "nginx" {
+  name = "nginx:1.21.6-alpine"
+}
+
+resource "docker_container" "nginx" {
+  image = docker_image.nginx.repo_digest
+  name  = "nginx-demo"
+}
+```
+
+Wir referenzieren die Resourcen `docker_image` und `docker_container` des Providers `docker` (siehe oben). Wir legen fest, dass wir das Docker image _nginx_ brauchen. In der Resource `docker_container` wird das `docker_image` _nginx_ referenziert, genauer gesagt den `repo_digest`. Laut Dokumentation footnote:[https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs/resources/image] ist das der sha256 digest. Der Name des Containers soll _nginx-demo_ lauten.
+
+== Data
+
+Provider können zusätzlich zu Resourcen auch _Data Sources_ zur Verfügung stellen. _Data Sources_ stellen Informationen außerhalb von Terraform bereit und entsprechen gewissermaßen Daten einer Resource der Infrastruktur. Beispielsweise lassen sich damit für Kubernetes alle verfügbaren Namespaces eines Clusters ausgeben.
+
+```json
+data "kubernetes_all_namespaces" "allns" {
+}
+```
+
+== Output
+
+Unter _Output_ kann man sich die von Programmsprachen bekannten Rückgabewerte vorstellen. Diese dienen zur verständlicheren Ausgabe im Terminal oder stellen Informationen für andere Terraform Scripts zur Verfügung. Sensible Daten wie Passwörter oder API Schlüssel lassen durch _Output_ Elemente maskieren.
+
+```json
+output "top_secret" {
+  value     = "do not tell the guys"
+  sensitive = true
+}
+```
+
+Best practise ist die _Output_ Blöcke in einer gesonderten Datei `output.hcl` abzulegen.
+
+== Variables
+
+Eine Variable (auch _Input Variable_) ermöglicht es, Terraform Scripts anzupassen ohne den Quellcode (also das Script selbst) zu modifizieren. Auch verhindert man dadurch, mit hardcoded Variablen zu arbeiten. Eine Terraform Variable gleicht in Programmiersprachen anders als man vermutet eher einer Konstanten. Standardmäßig werden Variablen in einer `variables.hcl` Datei abgelegt.
+
+```json
+variable doh {
+    type = string
+    default = "oh no, doh!"
+    description = "Homer's DOH!"
+    sensitive = false
+    nullable = false
+}
+```
+
+Ich erkläre das recht ausführliche Beispiel. Variablen können vom folgenden Typ sein:
+ 
+.Variable Types 
+ * string
+ * number
+ * bool
+ * list(_<TYPE>_)
+ * set(_<TYPE>_)
+ * map(_<TYPE>_)
+ * tuple([_<TYPE>_, _<TYPE>_, ...])
+ * object({_<ATTRIBUTE NAME>_ = _<TYPE>_})
+
+Es ist nicht erforderlich einen Typ anzugeben, jedoch bewährt es sich in der Praxis, da beim Lesen der Konfiguration keine Annahmen getroffen werden müssen. Auch quitiert Terraform mit einer besseren Fehlermeldung, falls der Typ der Variablen nicht korrekt ist.
+
+Der default value ist nicht unbedingt erforderlich. Allerdings wird der Entwickler beim Ausführen des Scripts jedes Mal aufgefordert für _doh_ einen Wert anzugeben. Möchte man keinen default value hier setzen, muss eine Datei `terraform.tfvars` angelegt werden:
+
+```text
+doh="oh no, DOH!"
+```
+
+Sensitive sagt aus, ob bei der Eingabe eines Wertes, dieser maskiert werden soll. Nullable, wie der Name schon sagt, legt fest, ob ein Wert auch fehlen darf.
+
+Außerdem können Eingaben seitens eines Entwicklers validiert werden. Es gibt eine Vielzahl an Funktionen footnote:[https://www.terraform.io/language/values/variables] die für die Validierung verwendet werden können.
+
+Um Variablen zu referenzieren, stellt man ein `var` vor dem Variablennamen voran -- nicht `vars` oder `variable` wie man vielleicht annehmen möchte. In unserem Fall sieht das so aus: `var.doh`
+
+Last but not least gibt es noch sog. _Local Values_. Mehr Informationen dazu kann man in der Terraform Dokumentation footnote:[https://www.terraform.io/language/values/locals] nachlesen.
+
+== Let's put everything together...
+
+[source,json]
+.main.tf
+----
+include::./resource/main.tf[]
+----
+
+[source,json]
+.variables.tf
+----
+include::./resource/variables.tf[]
+----
+
+[source,json]
+.outputs.tf
+----
+include::./resource/outputs.tf[]
+----
