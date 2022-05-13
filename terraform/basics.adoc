@@ -1,14 +1,14 @@
 = Terraform basics
 
-Ein Terraform Script besteht aus nur wenigen Elementen. Diese sind recht schnell zu erlernen. Auch die Syntax, die der von _json_ sehr ähnelt ist nicht schwierig.
+Ein Terraform Script besteht aus nur wenigen Elementen. Diese sind recht schnell zu erlernen. Auch die Syntax, die der von _JSON_ sehr ähnelt ist nicht schwierig.
 
 Im wesentlichen ist ein funktionsfähiges Script aus nur zwei Elementen aufgebaut: einem oder mehreren _Providern_ und den _Resourcen_. Kompliziertere Scripte beinhalten _Data_ und andere Elemente. Um eine aussagekräftigere Ausgabe zu erhalten gibt es _Output_. Um ein Terraform Script frei von hard-coded Werten zu halten, bietet sich das Element _Variable_.
 
 Im folgenden werde ich kurz die o.g. Elemente -- das sind die wichtigsten -- vorstellen. Mit dem dann gesammelten Wissen stelle ich im darauffolgenden Absatz ein komplexeres Beispiele vor, dass eine Cloud-Infrastruktur konfiguriert.
 
-== HCL ==
+== HCL
 
-Zu allererst jedoch eine sehr kurze Einführung in die *HashiCorp Configuration Language*. Wie eingangs gesagt, ist die Sprache eng mit _json_ verwandt. Genauso gut ließe sich ein Terraform Script auch mit _json_ schreiben, wenngleich der Aufwand höher ist.
+Zu allererst jedoch eine sehr kurze Einführung in die *HashiCorp Configuration Language*. Wie eingangs gesagt, ist die Sprache eng mit _JSON_ verwandt. Genauso gut ließe sich ein Terraform Script auch mit _JSON_ schreiben, wenngleich der Aufwand höher ist.
 Ein Block innerhalb eines Scripts besteht aus einem Header und einem Body. Der Haeder ist folgendermaßen aufgebaut:
 
 ```
@@ -17,7 +17,7 @@ Ein Block innerhalb eines Scripts besteht aus einem Header und einem Body. Der H
 
 Dabei bezeichnet der `BLOCK TYPE` z.B. einen Provider oder eine Resource.
 
-Der Body ist beinahe gleich aufgebaut wie bei _json_. Anders als bei _json_ verwendet _HCL_ keinen Doppelpunkt sondern ein Gleichheitszeichen für die Zuweisung.
+Der Body ist beinahe gleich aufgebaut wie bei _JSON_. Anders als bei _JSON_ verwendet _HCL_ keinen Doppelpunkt sondern ein Gleichheitszeichen für die Zuweisung.
 
 ```
 <IDENTIFIER> = <EXPRESSION>
@@ -33,7 +33,7 @@ resource "foo" "bar" {
 
 [TIP]
 ====
-Verschachtelte Blöcke lassen sich in _HCL_ wesentlich kompakter schreiben als mit _json_, wie wir gleich anhand eines Beispieles sehen werden.
+Verschachtelte Blöcke lassen sich in _HCL_ wesentlich kompakter schreiben als mit _JSON_, wie wir gleich anhand eines Beispieles sehen werden.
 ====
 
 == Provider
@@ -111,12 +111,12 @@ Eine Variable (auch _Input Variable_) ermöglicht es, Terraform Scripts anzupass
 
 [source,json]
 ----
-variable "doh" {
+variable "homer" {
   type = string // <1>
   description = "Homer's DOH!" // <2>
   sensitive = false // <3>
   nullable = false // <4>
-  default = "oh no, doh!" // <5>
+  default = "oh no, DOH!" // <5>
 }
 ----
 <1> Es ist nicht erforderlich einen Typ anzugeben, jedoch bewährt es sich in der Praxis, da beim Lesen der Konfiguration keine Annahmen getroffen werden müssen. Auch quitiert Terraform mit einer besseren Fehlermeldung, falls der Typ der Variablen nicht korrekt ist. Eine Variable kann vom folgenden Typ sein:
@@ -128,15 +128,15 @@ variable "doh" {
 * map(_<TYPE>_)
 * tuple([_<TYPE>_, _<TYPE>_, ...])
 * object({_<ATTRIBUTE NAME>_ = _<TYPE>_})
-<2> Eine aussagekräftige Beschreibung ist nie verkehrt und es ist Best-Practise.
-<3> Sensitive sagt aus, ob bei der Eingabe eines Wertes, dieser maskiert werden soll.
-<4> Nullable, wie der Name schon sagt, legt fest, ob ein Wert auch fehlen darf.
-<5> Default Value ist nicht unbedingt erforderlich. Allerdings wird der Entwickler beim Ausführen des Scripts jedes Mal aufgefordert für _doh_ einen Wert anzugeben. Möchte man keinen default value hier setzen, muss eine Datei angelegt werden.
+<2> Eine aussagekräftige Beschreibung ist nie verkehrt und es ist Best-Practise, um auch anderen Mitwirkenden wissen zu lassen, um was es hier geht.
+<3> `sensitive` sagt aus, ob bei der Eingabe eines Wertes, dieser maskiert werden soll.
+<4> `nullable`, wie der Name schon sagt, legt fest, ob ein Wert auch fehlen darf.
+<5> `default` ist nicht unbedingt erforderlich. Allerdings wird der Entwickler beim Ausführen des Scripts jedes Mal aufgefordert für _doh_ einen Wert anzugeben. Möchte man keinen Standardwert hier setzen, muss eine Datei angelegt werden.
 
 [source,text]
 .terraform.tfvars
 ----
-doh="oh no, DOH!"
+homer="oh no, DOH!"
 ----
 
 Außerdem können Eingaben seitens eines Entwicklers validiert werden. Es gibt eine Vielzahl an Funktionen footnote:[https://www.terraform.io/language/values/variables] die für die Validierung verwendet werden können.

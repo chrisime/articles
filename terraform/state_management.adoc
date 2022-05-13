@@ -8,5 +8,5 @@ Abgesehen von den Vorzügen einer Zustandsverwaltung kann es dazu kommen, dass d
 
 [IMPORTANT]
 ====
-Niemals die Infrastruktur direkt verändern, sofern Tools wie Ansible oder Terraform zum Einsatz kommen. Die Konsequenz ist ein erheblicher Mehraufwand, um den Zustand zu synchronisieren. Außerdem widerspricht es dem Konzept _Infrastructure as Code_
+Niemals die Infrastruktur direkt verändern, sofern Tools wie Ansible oder Terraform zum Einsatz kommen. Die Konsequenz ist ein erheblicher Mehraufwand, um den Zustand zu synchronisieren. Außerdem widerspricht es dem Konzept _Infrastructure as Code_.
 ====
