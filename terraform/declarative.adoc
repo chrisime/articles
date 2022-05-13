@@ -8,5 +8,5 @@ Terraform bedient sich des deklarativen Ansatzes, bei dem die Reihenfolge, also 
 
 [NOTE]
 ====
-Allgemein gibt es kein *besser* oder *schlechter*, beide Ansätze haben ihre Vor- und Nachteile. Manchmal ist es einfacher ein Kochrezept zu lesen, v.a. wenn es nicht zu aufwändig ist. In anderen Fällen reicht eine Übersicht der Zutaten aus, um ein gutes Essen auf den Tisch zu bekommen.
+Generell gibt es kein *besser* oder *schlechter*, beide Ansätze haben ihre Vor- und Nachteile. Manchmal ist es einfacher ein Kochrezept zu lesen, v.a. wenn es nicht zu aufwändig ist. In anderen Fällen reicht eine Übersicht der Zutaten aus, um ein gutes Essen auf den Tisch zu bekommen.
 ====

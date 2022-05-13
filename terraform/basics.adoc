@@ -138,20 +138,29 @@ Last but not least gibt es noch sog. _Local Values_. Mehr Informationen dazu kan
 
 == Let's put everything together...
 
+Wir setzen nun alle Teile des Beispiels zusammen. Der Haupteinstiegspunkt für Terraform ist die Datei `main.tf`. Sie entält die Definitionen für Provider und Resourcen.
+
+In `variables.tf` ist eine Variable für den Image Namen für Docker hinterlegt. Der Default-Wert ist hier mit angegeben, kann aber wie weiter oben schon gesagt, auch weggelassen werden. In diesem Fall müsste der Entwickler jedes Mal das Image angeben.
+
+Für die Ausgabe habe ich eine Kombination aus Image Namen und dessen Digest definiert. Wenngleich etwas künstlich anmutend möchte ich damit die Mächtigkeit von _Output_ zeigen.
+
 [source,json]
 .main.tf
 ----
 include::./resource/main.tf[]
 ----
+Die Hauptdatei enthält die Provider und Resource Blöcke.
 
 [source,json]
 .variables.tf
 ----
 include::./resource/variables.tf[]
 ----
+Der Image Name für Docker ist hier mit einem Default Wert hinterlegt.
 
 [source,json]
 .outputs.tf
 ----
 include::./resource/outputs.tf[]
 ----
+Mithilfe von Outputs lassen sich zugeschnittene Ausgaben definieren, womit auch die Lesbarkeit bei größeren Scripts erhöht wird.
