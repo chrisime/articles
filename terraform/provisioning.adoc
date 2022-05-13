@@ -8,7 +8,7 @@ Orchestration bedeutet im weitesten Sinne, dass sich das Tool um das Lifecycle-M
 
 == On-Premise
 
-Bei der Verwaltung eigener Server-Landschaften ist zu beachten, dass u.a. Benutzer, die Absicherung des Netzwerks bzw. das Deployment von Backends mit einer der wichtigsten Aufgaben ist. Der Server wird in der Regel von Rechenzentren mit einem vorinstalliertem Betriebssystem -- in der Regel Linux icon:linux[1x] -- bereitgestellt. Es geht also darum, die Firewalls ausreichend gut zu konfiguieren, Benutzer bzw. Benutzergruppen zu erstellen, Pakete zu installieren und Services zu konfigurieren. Hier steht also die Konfiguration eines oder mehrerer Server im Vordergrund. Ansible ist hier das passendere Tool.
+Bei der Verwaltung eigener Server-Landschaften ist zu beachten, dass u.a. Benutzer, die Absicherung des Netzwerks bzw. das Deployment von Backends mit einer der wichtigsten Aufgaben ist. Der Server wird in der Regel von Rechenzentren mit einem vorinstalliertem Betriebssystem -- in der Regel Linux icon:linux[linux_icon,width=24] -- bereitgestellt. Es geht also darum, die Firewalls ausreichend gut zu konfiguieren, Benutzer bzw. Benutzergruppen zu erstellen, Pakete zu installieren und Services zu konfigurieren. Hier steht also die Konfiguration eines oder mehrerer Server im Vordergrund. Ansible ist hier das passendere Tool.
 
 == Cloud-Infrastruktur
 
