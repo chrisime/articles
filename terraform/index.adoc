@@ -18,4 +18,6 @@ include::./basics.adoc[leveloffset=+1]
 
 include::./commands.adoc[leveloffset=+1]
 
+include::./conclusion.adoc[leveloffset=+1]
+
 include::./about.adoc[]
