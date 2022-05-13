@@ -6,9 +6,10 @@
 :keywords: terraform, hcl, IaC, infrastructure as code, provisioning, orchestration, cloud, management
 :url-repo: https://github.com/chrisime/articles/terraform
 :icons: image
+:imagesdir: ./images
 :source-highlighter: coderay
 
-image::./images/tf_logo.png["terraform logo", 500, float=center]
+image::tf_logo.png["terraform logo", 500, float=center]
 
 include::./intro.adoc[leveloffset=+1]
 
