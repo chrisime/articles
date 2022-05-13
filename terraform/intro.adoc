@@ -6,7 +6,7 @@ Mit das größte Hauptanwendungsgebiet von Terraform ist die Konfiguration von C
 
 _HCL_ macht es zudem möglich, dass DevOps-Aufgaben einfacher von Entwickler-Teams übernommen weren können. Dies ist ein seit Jahren anhaltender Trend. Probleme in der Infrastuktur lassen sich schneller und gezielter lösen: Andere Teams müssen nicht erst durch einen langwierigen Prozess mit der Problemlösung beauftragt werden.
 
-[NOTE]
+[TIP]
 ====
 Terraform und die dazugehörige Sprache _HCL_ ist Open Source und kann daher im Rahmen der _MPL-2.0_ Lizenz footnote:[https://www.mozilla.org/en-US/MPL/2.0/] beliebig erweitert, verändert oder in eigene Produkte integriert werden.
 ====

@@ -26,12 +26,15 @@ Der Body ist beinahe gleich aufgebaut wie bei _json_. Anders als bei _json_ verw
 Ein valides HCL-Beispiel ist:
 
 ```json
-variable "foo" "bar" {
+resource "foo" "bar" {
     id = 123
 }
 ```
 
+[TIP]
+====
 Verschachtelte Blöcke lassen sich in _HCL_ wesentlich kompakter schreiben als mit _json_, wie wir gleich anhand eines Beispieles sehen werden.
+====
 
 == Provider
 
@@ -86,24 +89,29 @@ data "kubernetes_all_namespaces" "allns" {
 
 == Output
 
-Unter _Output_ kann man sich die von Programmsprachen bekannten Rückgabewerte vorstellen. Diese dienen zur verständlicheren Ausgabe im Terminal oder stellen Informationen für andere Terraform Scripts zur Verfügung. Sensible Daten wie Passwörter oder API Schlüssel lassen durch _Output_ Elemente maskieren.
-
-```json
-output "top_secret" {
-  value     = "do not tell the guys"
-  sensitive = true
-}
-```
-
-Best practise ist die _Output_ Blöcke in einer gesonderten Datei `output.hcl` abzulegen.
-
-== Variables
-
-Eine Variable (auch _Input Variable_) ermöglicht es, Terraform Scripts anzupassen ohne den Quellcode (also das Script selbst) zu modifizieren. Auch verhindert man dadurch, mit hardcoded Variablen zu arbeiten. Eine Terraform Variable gleicht in Programmiersprachen anders als man vermutet eher einer Konstanten. Standardmäßig werden Variablen in einer `variables.hcl` Datei abgelegt.
+Unter _Output_ kann man sich die von Programmsprachen bekannten Rückgabewerte vorstellen. Diese dienen zur verständlicheren Ausgabe im Terminal oder stellen Informationen für andere Terraform Scripts zur Verfügung.
 
 [source,json]
 ----
-variable doh {
+output "top_secret" {
+  value     = "do not tell the guys"
+  sensitive = true // <1>
+}
+----
+<1> Sensible Daten wie Passwörter oder API Schlüssel lassen durch _Output_ Elemente maskieren.
+
+[TIP]
+====
+Best practise ist die _Output_ Blöcke in einer gesonderten Datei `outputs.tf` abzulegen.
+====
+
+== Variables
+
+Eine Variable (auch _Input Variable_) ermöglicht es, Terraform Scripts anzupassen ohne den Quellcode (also das Script selbst) zu modifizieren. Auch verhindert man dadurch, mit hardcoded Variablen zu arbeiten. Eine Terraform Variable gleicht in Programmiersprachen anders als man vermutet eher einer Konstanten. Standardmäßig werden Variablen in einer `variables.tf` Datei abgelegt.
+
+[source,json]
+----
+variable "doh" {
   type = string // <1>
   description = "Homer's DOH!" // <2>
   sensitive = false // <3>
@@ -133,7 +141,10 @@ doh="oh no, DOH!"
 
 Außerdem können Eingaben seitens eines Entwicklers validiert werden. Es gibt eine Vielzahl an Funktionen footnote:[https://www.terraform.io/language/values/variables] die für die Validierung verwendet werden können.
 
-Um Variablen zu referenzieren, stellt man ein `var` vor dem Variablennamen voran -- nicht `vars` oder `variable` wie man vielleicht annehmen möchte. In unserem Fall sieht das so aus: `var.doh`
+[NOTE]
+====
+Um Variablen zu referenzieren, stellt man ein `var` vor dem Variablennamen voran -- nicht `vars` oder `variable` wie man vielleicht annehmen möchte. In unserem Fall sieht das dann so aus: `var.doh`
+====
 
 === Local Values
 Last but not least gibt es noch sog. _Local Values_. Mehr Informationen dazu kann man in der Terraform Dokumentation footnote:[https://www.terraform.io/language/values/locals] nachlesen.
@@ -142,9 +153,9 @@ Last but not least gibt es noch sog. _Local Values_. Mehr Informationen dazu kan
 
 Wir setzen nun alle Teile des Beispiels zusammen. Der Haupteinstiegspunkt für Terraform ist die Datei `main.tf`. Sie entält die Definitionen für Provider und Resourcen.
 
-In `variables.tf` ist eine Variable für den Image Namen für Docker hinterlegt. Der Default-Wert ist hier mit angegeben, kann aber wie weiter oben schon gesagt, auch weggelassen werden. In diesem Fall müsste der Entwickler jedes Mal das Image angeben.
+In `variables.tf` ist eine Variable für den Namen des Images für Docker hinterlegt. Der Default-Wert ist hier mit angegeben, kann aber wie weiter oben schon gesagt, auch weggelassen werden. In diesem Fall müsste der Entwickler jedes Mal das Image angeben.
 
-Für die Ausgabe habe ich eine Kombination aus Image Namen und dessen Digest definiert. Wenngleich etwas künstlich anmutend möchte ich damit die Mächtigkeit von _Output_ zeigen.
+Für die Ausgabe habe ich eine Kombination aus dem Namen des Images und dessen Digest definiert. Wenngleich etwas künstlich anmutend möchte ich damit die Mächtigkeit von _Output_ zeigen.
 
 [source,json]
 .main.tf
