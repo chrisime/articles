@@ -1,7 +1,6 @@
 = Introduction to Terraform
 :author: Christian Meyer
 :email: christian@openvalue.de
-:revnumber: 1.0
 :revdate: {docdate}
 :description: Intro to Terraform, all you need to know to get started
 :keywords: terraform, hcl, IaC, infrastructure as code, provisioning, orchestration, cloud, management
