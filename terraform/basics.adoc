@@ -59,18 +59,21 @@ Das Script fordert an, dass der Provider _docker_ in mindestens der Version `2.1
 
 Resourcen beschreiben Objekte einer Infrastruktur und sind somit die wichtigsten Elemente innerhaln eines Scripts. Jede Resource wird von einem Provider implementiert und stellt, je nach Typ, eine Vielzahl von Einstellungsmöglichkeiten bereit. In Terraform gibt es eine Reihe von Meta-Argumenten, etwa `depends_on` um explizit anzugeben, welche Resource von einer anderen abhängt. Dies ist nicht unbedingt erforderlich, da Terraform selständig Abhängigkeiten auflöst, kann aber zu einem besseren Verständnis bzw. Überblick bei größeren Scripten führen.
 
-```json
-resource "docker_image" "nginx" {
-  name = "nginx:1.21.6-alpine"
+[source,json]
+----
+resource "docker_image" "nginx" { // <1>
+  name = "nginx:1.21.6-alpine" // <2>
 }
 
-resource "docker_container" "nginx" {
-  image = docker_image.nginx.repo_digest
-  name  = "nginx-demo"
+resource "docker_container" "nginx" { // <1>
+  image = docker_image.nginx.repo_digest // <3>
+  name  = "nginx-demo" // <4>
 }
-```
-
-Wir referenzieren die Resourcen `docker_image` und `docker_container` des Providers `docker` (siehe oben). Wir legen fest, dass wir das Docker image _nginx_ brauchen. In der Resource `docker_container` wird das `docker_image` _nginx_ referenziert, genauer gesagt den `repo_digest`. Laut Dokumentation footnote:[https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs/resources/image] ist das der sha256 digest. Der Name des Containers soll _nginx-demo_ lauten.
+----
+<1> Resourcen `docker_image` und `docker_container` des Providers `docker` (siehe vorheriges Beispiel in <<Provider>>)
+<2> Festlegen des Images `nginx` in der Version `1.21.6-alpine`
+<3> Referenzieren des Docker Images durch `repo_digest`, anhand des sha256 digest, siehe Terraform Dokumentation footnote:[https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs/resources/image]
+<4> Der Name des Containers ist "nginx-demo" 
 
 == Data
 
@@ -98,42 +101,41 @@ Best practise ist die _Output_ Blöcke in einer gesonderten Datei `output.hcl` a
 
 Eine Variable (auch _Input Variable_) ermöglicht es, Terraform Scripts anzupassen ohne den Quellcode (also das Script selbst) zu modifizieren. Auch verhindert man dadurch, mit hardcoded Variablen zu arbeiten. Eine Terraform Variable gleicht in Programmiersprachen anders als man vermutet eher einer Konstanten. Standardmäßig werden Variablen in einer `variables.hcl` Datei abgelegt.
 
-```json
+[source,json]
+----
 variable doh {
-    type = string
-    default = "oh no, doh!"
-    description = "Homer's DOH!"
-    sensitive = false
-    nullable = false
+  type = string // <1>
+  description = "Homer's DOH!" // <2>
+  sensitive = false // <3>
+  nullable = false // <4>
+  default = "oh no, doh!" // <5>
 }
-```
+----
+<1> Es ist nicht erforderlich einen Typ anzugeben, jedoch bewährt es sich in der Praxis, da beim Lesen der Konfiguration keine Annahmen getroffen werden müssen. Auch quitiert Terraform mit einer besseren Fehlermeldung, falls der Typ der Variablen nicht korrekt ist. Eine Variable kann vom folgenden Typ sein:
+* string
+* number
+* bool
+* list(_<TYPE>_)
+* set(_<TYPE>_)
+* map(_<TYPE>_)
+* tuple([_<TYPE>_, _<TYPE>_, ...])
+* object({_<ATTRIBUTE NAME>_ = _<TYPE>_})
+<2> Eine aussagekräftige Beschreibung ist nie verkehrt und es ist Best-Practise.
+<3> Sensitive sagt aus, ob bei der Eingabe eines Wertes, dieser maskiert werden soll.
+<4> Nullable, wie der Name schon sagt, legt fest, ob ein Wert auch fehlen darf.
+<5> Default Value ist nicht unbedingt erforderlich. Allerdings wird der Entwickler beim Ausführen des Scripts jedes Mal aufgefordert für _doh_ einen Wert anzugeben. Möchte man keinen default value hier setzen, muss eine Datei angelegt werden.
 
-Ich erkläre das recht ausführliche Beispiel. Variablen können vom folgenden Typ sein:
- 
-.Variable Types 
- * string
- * number
- * bool
- * list(_<TYPE>_)
- * set(_<TYPE>_)
- * map(_<TYPE>_)
- * tuple([_<TYPE>_, _<TYPE>_, ...])
- * object({_<ATTRIBUTE NAME>_ = _<TYPE>_})
-
-Es ist nicht erforderlich einen Typ anzugeben, jedoch bewährt es sich in der Praxis, da beim Lesen der Konfiguration keine Annahmen getroffen werden müssen. Auch quitiert Terraform mit einer besseren Fehlermeldung, falls der Typ der Variablen nicht korrekt ist.
-
-Der default value ist nicht unbedingt erforderlich. Allerdings wird der Entwickler beim Ausführen des Scripts jedes Mal aufgefordert für _doh_ einen Wert anzugeben. Möchte man keinen default value hier setzen, muss eine Datei `terraform.tfvars` angelegt werden:
-
-```text
+[source,text]
+.terraform.tfvars
+----
 doh="oh no, DOH!"
-```
-
-Sensitive sagt aus, ob bei der Eingabe eines Wertes, dieser maskiert werden soll. Nullable, wie der Name schon sagt, legt fest, ob ein Wert auch fehlen darf.
+----
 
 Außerdem können Eingaben seitens eines Entwicklers validiert werden. Es gibt eine Vielzahl an Funktionen footnote:[https://www.terraform.io/language/values/variables] die für die Validierung verwendet werden können.
 
 Um Variablen zu referenzieren, stellt man ein `var` vor dem Variablennamen voran -- nicht `vars` oder `variable` wie man vielleicht annehmen möchte. In unserem Fall sieht das so aus: `var.doh`
 
+=== Local Values
 Last but not least gibt es noch sog. _Local Values_. Mehr Informationen dazu kann man in der Terraform Dokumentation footnote:[https://www.terraform.io/language/values/locals] nachlesen.
 
 == Let's put everything together...
