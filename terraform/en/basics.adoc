@@ -1,0 +1,179 @@
+= Terraform Basics
+
+A Terraform Script consists of only a few elements. These can be learned quite quickly. The syntax which is very similar to _JSON_ is not difficult either.
+
+Essentially, a working script is made up of just two elements: one or more _Providers_ and the _Resources_. More complicated scripts contain _Data_ and other elements. To get a more meaningful output there is _Output_. The _Variable_ element is used to keep a Terraform script free of hard-coded values.
+
+In the following I will briefly introduce these elements.
+
+== HCL
+
+But first, a very brief introduction to the *HashiCorp Configuration Language*. As said at the beginning, the language is closely related to _JSON_. A Terraform script could be written just as well with _JSON_, although the effort is higher.
+A block within a script consists of a header and a body. The header is structured as follows:
+
+```
+<BLOCK TYPE> "<BLOCK LABEL>" "<BLOCK LABEL>"
+```
+
+The `BLOCK TYPE` designates, e.g. a provider or a resource.
+
+The body has almost the same structure as _JSON_. Unlike _JSON_, _HCL_ does not use a colon but an equals sign for the assignment.
+
+```
+<IDENTIFIER> = <EXPRESSION>
+```
+
+A valid HCL example is:
+
+```json
+resource "foo" "bar" {
+     id=123
+}
+```
+
+[TIP]
+====
+Nested blocks can be written much more compactly in _HCL_ than with _JSON_, as we will see in an example.
+====
+
+== Providers
+
+A Terraform Script must specify which providers it requires. A provider can be thought of as an API. Without a provider, Terraform cannot manage any infrastructure. Providers therefore interact with a cloud or on-premise infrastructure. The configuration of a provider must be in the _root_ directory. The required providers and the version must also be located there. Here is a short and incomplete example:
+
+```json
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = ">= 2.16.0"
+    }
+  }
+}
+
+...
+
+provider "docker" {
+}
+```
+
+The script requests that the provider _docker_ be at least version `2.16.0`. The provider itself is not configured in more detail.
+
+== Resources
+
+Resources describe objects of an infrastructure and are therefore the most important elements within a script. Each resource is implemented by a provider and, depending on the type, provides a variety of setting options. There are a number of meta-arguments in Terraform, such as `depends_on`, to explicitly state which resource depends on another. This is not absolutely necessary, since Terraform independently resolves dependencies, but it can lead to a better understanding or overview of larger scripts.
+
+[source,json]
+----
+resource "docker_image" "nginx" { // <1>
+  name = "nginx:1.21.6-alpine" // <2>
+}
+
+resource "docker_container" "nginx" { // <1>
+  image = docker_image.nginx.repo_digest // <3>
+  name  = "nginx-demo" // <4>
+}
+----
+<1> Resources `docker_image` and `docker_container` of provider `docker` (see previous example in <<Provider>>)
+<2> Set image `nginx` in version `1.21.6-alpine`
+<3> Referencing the Docker image through `repo_digest` using the sha256 digest, see Terraform documentation footnote:[https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs/resources/image]
+<4> The name of the container is "nginx-demo"
+
+== Data
+
+In addition to resources, providers can also provide _Data Sources_. _Data Sources_ provide information outside of Terraform and correspond in a way to data of an infrastructure resource. For example, all available namespaces of a cluster can be output for Kubernetes.
+
+```json
+data "kubernetes_all_namespaces" "allns" {
+}
+```
+
+== Output
+
+You can think of _Output_ as return values known from program languages. These are used for more understandable output in the terminal or provide information for other Terraform scripts.
+
+[source,json]
+----
+output "top_secret" {
+  value     = "do not tell the guys"
+  sensitive = true // <1>
+}
+----
+<1> Sensitive data such as passwords or API keys can be masked by _Output_ elements.
+
+[TIP]
+====
+Best practice is to put the _Output_ blocks in a separate file `outputs.tf`.
+====
+
+== Variables
+
+A variable (also known as _Input Variable_) makes it possible to adapt Terraform scripts without modifying the source code (i.e. the script itself). This also prevents you from working with hardcoded values. In programming languages a Terraform variable is more like a constant. By default, variables should be stored in a `variables.tf` file.
+
+[source,json]
+----
+variable "homer" {
+  type = string // <1>
+  description = "Homer's DOH!" // <2>
+  sensitive = false // <3>
+  nullable = false // <4>
+  default = "oh no, DOH!" // <5>
+}
+----
+<1> It is not necessary to specify a type, but it is useful in practice since no assumptions have to be made when reading the configuration. Terraform also responds with a better error message if the variable type is not correct. A variable can be of the following type:
+* string
+* number
+* bool
+* list(_<TYPE>_)
+* set(_<TYPE>_)
+* map(_<TYPE>_)
+* tuple([_<TYPE>_, _<TYPE>_, ...])
+* object({_<ATTRIBUTE NAME>_ = _<TYPE>_})
+<2> A meaningful description is never wrong and it's best practice to let other contributors know what this is about.
+<3> `sensitive`: ist not strictly required. `true` means a value it should be masked.
+<4> `nullable`: is not strictly required. As the name suggests, determines whether a value can be omitted.
+<5> `default` is not strictly required. However, the developer is prompted for a value for _doh_ each time the script is run. If you do not want to set a default value here, a file must be created.
+
+[source,text]
+.terraform.tfvars
+----
+homer="oh no, DOH!"
+----
+
+In addition, inputs can be validated by a developer. There are a variety of functions footnote:[https://www.terraform.io/language/values/variables] that can be used for validation.
+
+[NOTE]
+====
+To refer to variables, precede the variable name with a `var` -- not `vars` or `variable` as one might assume. In our case it looks like this: `var.doh`
+====
+
+=== Local Values
+Last but not least there are so-called _Local Values_. More information can be found in the Terraform documentation footnote:[https://www.terraform.io/language/values/locals].
+
+== Putting everything together...
+
+We now put all parts of the example together. The main entry point for Terraform is the `main.tf` file. It contains the definitions for providers and resources.
+
+A variable for the name of the Docker image is stored in `variables.tf`. The default value is also specified here, but as already mentioned above, it can also be omitted. In this case the developer would have to specify the image each time.
+
+For the output I have defined a combination of the name of the image and its digest. Although somewhat artificial, I want to show the power of _Output_.
+
+[source,json]
+.main.tf
+----
+include::../resource/main.tf[]
+----
+The main file contains the provider and resource blocks.
+
+[source,json]
+.variables.tf
+----
+include::../resource/variables.tf[]
+----
+The image name for Docker is stored here with a default value.
+
+[source,json]
+.outputs.tf
+----
+include::../resource/outputs.tf[]
+----
+Outputs can be used to define tailored outputs, which also increases the readability of larger scripts.

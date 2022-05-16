@@ -1,4 +1,4 @@
-= Introduction to Terraform
+= Einführung in Terraform
 :author: Christian Meyer
 :email: christian@openvalue.de
 :revdate: {docdate}
@@ -6,7 +6,8 @@
 :keywords: terraform, hcl, IaC, infrastructure as code, provisioning, orchestration, cloud, management
 :url-repo: https://github.com/chrisime/articles/terraform
 :icons: image
-:imagesdir: ./images
+:imagesdir: ../images
+:iconsdir: ../images/icons
 :source-highlighter: coderay
 
 image::tf_logo.png["terraform logo", 500, float=center]

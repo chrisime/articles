@@ -1,0 +1,17 @@
+= Mutable vs Immutable
+
+Another difference between Ansible and Terraform is how the tools apply changes to a running instance. There are two options: change the infrastructure on-the-fly or replace it.
+
+Terraform favors an immutable infrastructure, which means that running resources are usually "destroyed" and replaced with new ones. But there are also exceptions where it is not necessary.
+
+Ansible applies the configuration on each pass. If there is a configuration change, it will be applied without Ansible replacing the previous one.
+
+The advantage of an immutable infrastructure is that the environment can be created in a predictable and reproducible manner at any time. On the other hand, there is the disadvantage that certain resources that change often are generated anew each time, which is rather unfavorable in the case of VPCs or firewalls, for example.
+
+In general, an immutable infrastructure is preferable.
+However, changes occur more frequently, for example within a network, and are therefore subject to constant change.
+
+[CAUTION]
+====
+You should be clear beforehand which tool is better suited for which purpose. In some cases it's Terraform in other Ansible. A combination of both tools may therefore be the better solution.
+====

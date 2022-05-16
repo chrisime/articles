@@ -1,0 +1,26 @@
+= Orchestration & Configuration Management
+
+Depending on the requirement, Terraform or Ansible is a "better" candidate. To make it easier to understand what configuration management or orchestration means, I will present a few examples and briefly explain which tool is more suitable.
+
+Just so much in advance what the two terms mean -- configuration management means that the tool, such as Ansible, takes care of the automation of the configuration of resources, be it hardware or software.
+
+In the broadest sense, orchestration means that the tool takes care of the lifecycle management of an environment/infrastructure. Changes to the infrastructure that are "programmed" in HCL are automatically carried out by Terraform using the infrastructure API provided by AWS or GCP.
+
+== On premise
+
+When managing your own server landscapes, it should be noted that users, network security and the deployment of backends are among the most important tasks. The server is usually provided by data centers with a pre-installed operating system -- usually Linux icon:linux[linux_icon,width=24]. It is therefore a question of configuring the firewalls sufficiently well, creating users or user groups, installing packages and configuring services. The focus here is on configuring one or more servers. Ansible is the more appropriate tool here.
+
+== cloud infrastructure
+
+The focus here is on configuration of virtual server instances, selection of the appropriate operating system image, configuration of buckets and other resources. Using the SDK provided by the cloud provider, you have the option of configuring the virtual server without first logging on to the instance and executing commands in the terminal. Terraform has a clear advantage here, as it provides the environment in a reproducible manner. The instance can also be easily scaled horizontally if the current capacity is no longer sufficient.
+
+== office equipment
+
+Similar to servers, laptops or office computers can be easily managed and configured centrally via Ansible in order to guarantee a company policy. Here, too, the focus is on user administration, the installation of applications or protection by a firewall.
+
+[TIP]
+====
+Terraform is therefore primarily specialized in providing a cloud infrastructure, whereas Ansible is more intended to automate the configuration of an existing on-premises infrastructure with a pre-installed operating system.
+
+As always, however: *exceptions prove the rule*
+====

@@ -1,0 +1,29 @@
+= Terraform CLI
+
+Finally, I would like to give a short introduction on how to use Terraform CLI. Essentially, only three steps are necessary: initialize, plan and apply.
+
+== Initialize
+
+`terraform init` has to be started before the actual execution.
+
+In the first step, Terraform installs modules into the local directory. The local backend is then initialized -- there are numerous cloud-based backends. Next, Terraform uploads providers to the local directory. Then, a _lock_ file `.terraform.lock.hcl` containing provider meta information is created.
+
+If necessary, the configuration can be checked with a `terraform validate`.
+
+== Plan
+
+To preview what changes Terraform will make, the CLI provides the `plan` command. The plan can be redirected to a file in binary form: `terraform plan -out myplan`. A readable _JSON_ output of the created plan can be obtained with `terraform show -json myplan`. This step is optional -- the changes will also be output with the `apply` command.
+
+== Apply
+
+If no errors were found, the configuration can now be applied. The `apply` command is available for this.
+
+`terraform apply myplan` displays the change plan and asks the developer to confirm the changes with "yes". Other user inputs abort the operation.
+
+== Destroy
+
+Existing infrastructure can also be destroyed again:
+
+`terraform destroy`
+
+Just like `apply`, Terraform prompts you to confirm this step with a "yes".

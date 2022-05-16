@@ -1,0 +1,12 @@
+= Before we start...
+
+Terraform footnote:[https://terraform.io] is a very popular and widely used management tool that allows one to describe infrastructure in terms of code (_Infrastructure as Code_). HashiCorp introduced Terraform in 2014 and has been in version 1.0 since June 8, 2021. Half a year later, on December 8, 2012, HashiCorp released version 1.1 on which this article is based. The description language _HCL_ footnote:[https://github.com/hashicorp/hcl] (short for _HashiCorp Configuration Language_) is based on _JSON_ and is very easy to learn. It is also possible to write the configuration directly in _JSON_ footnote:[https://www.terraform.io/language/syntax/json]. However, due to the verbosity of the syntax, more writing is required.
+
+One of the largest main areas of application for Terraform is the configuration of cloud infrastructures, so that a new environment can be made available automatically in just a few minutes, i.e. without much additional effort.
+
+_HCL_ also makes it possible for DevOps tasks to be taken over more easily by development teams. This has been a trend that has been going on for years. Problems in the infrastructure can be solved faster and in a more targeted manner: other teams do not have to be assigned to solve the problem through a lengthy process.
+
+[TIP]
+====
+Terraform and the associated language _HCL_ is open source and can therefore be expanded, modified or incorporated into your own products as required under the _MPL-2.0_ license footnote:[https://www.mozilla.org/en-US/MPL/2.0/] to get integrated.
+====

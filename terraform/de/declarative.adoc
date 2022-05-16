@@ -1,4 +1,4 @@
-= Declarative vs Impertative Approach
+= Deklarativer vs Impertativer Ansatz
 
 Es gibt zwei Möglichkeiten die Infrastruktur mithilfe von Code zu beschreiben. Die eine bedient sich eines prozedural bzw. imperativen Ansatzes. Die andere eines deklarativen.
 

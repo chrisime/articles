@@ -1,0 +1,17 @@
+= Stateful vs. Stateless
+
+Ansible and Terraform behave fundamentally differently when it comes to the current state of a cloud infrastructure or server. Ansible is stateless, which means it doesn't know what the current state of the server is. In general the status can be read from the configuration, because the "recipe" specifies how something and what should be executed, installed or configured by Ansible. However, one cannot know how successful the last run was. So it may be that the "recipe" does not reflect the real state.
+
+[NOTE]
+====
+There exists some workarounds to find out the current status.
+====
+
+Terraform, on the other hand, relies on dedicated status management. That is, the last execution is kept in a file. So if a change doesn't affect the actual infrastructure, Terraform knows there's nothing to be done.
+
+Aside from the benefits of health management, the health of the infrastructure can drift at odds with what Terraform knows about it. This happens when a developer changes the infrastructure directly, i.e. bypassing Terraform or Ansible. However, this drift can be eliminated by manually comparing the state of Terraform with that of the infrastructure.
+
+[IMPORTANT]
+====
+Never change the infrastructure directly if tools like Ansible or Terraform are used. The consequence is a considerable additional effort to synchronize the status. It also contradicts the concept of _Infrastructure as Code_.
+====

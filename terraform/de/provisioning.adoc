@@ -1,4 +1,4 @@
-= Orchestration and Configuration Management
+= Orchestration und Configuration Management
 
 Je nach Anforderung ist Terraform oder Ansible der geeignetere Kandidat. Zur besseren Verständlichkeit was Konfigurationsmanagement bzw. Orchestration bedeutet stelle ich hier ein paar Beispiele vor und erkläre kurz, welches Tool passender ist.
 
@@ -14,8 +14,7 @@ Bei der Verwaltung eigener Server-Landschaften ist zu beachten, dass u.a. Benutz
 
 Konfiguration von virtuellen Server-Instanzen, Auswahl des geeigneten Betriebssystem-Image, Konfiguration von Buckets und andere Resourcen steht hier im Vordergrund. Über das vom Cloud-Anbieter zur Verfügung gestellte SDK hat man die Möglichkeit den virtuellen Server zu konfigurieren ohne sich erst bei der Instanz anzumelden und Befehle im Terminal auszuführen. Hier ist Terraform klar im Vorteil, da es reproduzierbar die Umgebung bereitstellt. Die Instanz kann auch sehr einfach horizontal skaliert werden, sofern die gegenwärtige Kapazität nicht mehr ausreicht.
 
-
-== Office Equipment
+== Büroausstattung
 
 Laptops oder Büro-Computer können ähnlich wie Server einfach zentral per Ansible verwaltet und konfiguriert werden, um eine Firmen-Policy zu garantieren. Auch hier steht die Benutzer-Administration, die Installation von Anwendungen oder die Absicherung durch eine Firewall im Vordergrund.
 

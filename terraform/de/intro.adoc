@@ -1,4 +1,4 @@
-= Before we start
+= Bevor wir loslegen...
 
 Terraform footnote:[https://terraform.io] ist ein sehr populäres und vielfach eingesetzten Management Tools dies es einem ermöglichen, die Infrastruktur in Form durch Code (_Infrastructure as Code_) zu beschreiben. HashiCorp stellte Terraform 2014 vor und liegt seit dem 8. Juni 2021 in der Version 1.0 vor. Ein halbes Jahr später, am 8. Dezember 2012 brachte HashiCorp die Version 1.1 heraus auf welcher dieser Artikel basiert. Die Beschreibungssprache _HCL_ footnote:[https://github.com/hashicorp/hcl] (kurz für _HashiCorp Configuration Language_) orientiert sich stark an _JSON_ und ist sehr einfach zu erlernen. Es ist auch möglich, die Konfiguration direkt in _JSON_ footnote:[https://www.terraform.io/language/syntax/json] zu schreiben. Aufgrund der Verbosity der Syntax ist jedoch ein größrere Schreibaufwand erforderlich.
 

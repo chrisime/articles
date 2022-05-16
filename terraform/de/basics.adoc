@@ -1,4 +1,4 @@
-= Terraform basics
+= Terraform Grundlagen
 
 Ein Terraform Script besteht aus nur wenigen Elementen. Diese sind recht schnell zu erlernen. Auch die Syntax, die der von _JSON_ sehr ähnelt ist nicht schwierig.
 
@@ -149,7 +149,7 @@ Um Variablen zu referenzieren, stellt man ein `var` vor dem Variablennamen voran
 === Local Values
 Last but not least gibt es noch sog. _Local Values_. Mehr Informationen dazu kann man in der Terraform Dokumentation footnote:[https://www.terraform.io/language/values/locals] nachlesen.
 
-== Let's put everything together...
+== Und nun alles zusammen...
 
 Wir setzen nun alle Teile des Beispiels zusammen. Der Haupteinstiegspunkt für Terraform ist die Datei `main.tf`. Sie entält die Definitionen für Provider und Resourcen.
 
@@ -160,20 +160,20 @@ Für die Ausgabe habe ich eine Kombination aus dem Namen des Images und dessen D
 [source,json]
 .main.tf
 ----
-include::./resource/main.tf[]
+include::../resource/main.tf[]
 ----
 Die Hauptdatei enthält die Provider und Resource Blöcke.
 
 [source,json]
 .variables.tf
 ----
-include::./resource/variables.tf[]
+include::../resource/variables.tf[]
 ----
 Der Image Name für Docker ist hier mit einem Default Wert hinterlegt.
 
 [source,json]
 .outputs.tf
 ----
-include::./resource/outputs.tf[]
+include::../resource/outputs.tf[]
 ----
 Mithilfe von Outputs lassen sich zugeschnittene Ausgaben definieren, womit auch die Lesbarkeit bei größeren Scripts erhöht wird.

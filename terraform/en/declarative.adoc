@@ -1,0 +1,12 @@
+= Declarative vs Impertative Approach
+
+There are two ways to describe the infrastructure using code. One uses a procedural or imperative approach. The other of a declarative.
+
+_Ansible_ footnote:[https://ansible.com], which exists since 2012, is another widely used infrastructure management tool. It relies on configuration files with an imperative _YAML_ structure: _YAML_ is a _json_-like language, but syntactically less verbose and therefore easier to read. The procedural approach can be thought of as a recipe where the order in which you work the ingredients plays a big role in preparing a tasty meal.
+
+Terraform uses the declarative approach, in which the order, i.e. how and where configurations are stored, is irrelevant. Dependencies between individual configurations are resolved independently by Terraform, which means that this process must take place before the actual application.
+
+[NOTE]
+====
+In general there is no *better* or *worse*, both approaches have their advantages and disadvantages. Sometimes it is easier to just read the entire recipe, especially if it is not too complicated. In other cases, an overview of the ingredients is enough to put a good meal on the table.
+====

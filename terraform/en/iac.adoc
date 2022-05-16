@@ -1,0 +1,11 @@
+= Infrastructure as Code
+
+One of the frequently mentioned buzzwords in recent years is _IaC_ (Infrastructure as Code). This allows a virtual infrastructure to be defined with a declarative model in text files. These text files can be stored in repositories, e.g. GitHub or GitLab, just like source code, and are therefore automatically versioned. This allows the developer to understand how the infrastructure has changed over time and whether any errors have crept in. The code also serves as documentation. As a result, intranet documentation, which was necessary in the past, is largely no longer absolutely necessary. Other advantages such as working on the infrastructure at the same time are also easier to achieve, although testing the changes is of course still necessary.
+
+include::./declarative.adoc[leveloffset=+1]
+
+include::./state_management.adoc[leveloffset=+1]
+
+include::./mutability.adoc[leveloffset=+1]
+
+include::./provisioning.adoc[leveloffset=+1]
