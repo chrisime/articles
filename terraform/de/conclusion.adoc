@@ -1,3 +1,3 @@
 = Fazit
 
-WriteMe!
+Terraform konzentriert sich mit seiner leicht verständlichen Syntax auf das Wesentliche. Nämlich die "Konfiguration" von Cloud- und On-Premise Infrastrukturen. Mit nur sehr wenigen Elementen lassen sich in kurzer Zeit die gewünschten Ergebnisse erzielen. Gleichzeitig ist die gesamte Infrastruktur dokumentiert. Sofern nicht manuell an der Infrastruktur Änderungen vorgenommen werden, kann man sich sicher sein, dass der Zustand welcher lokal persistiert ist, der der Konfigurationsinstanz entspricht. Wie ich im Artikel ansprach, ist Terraform nicht immer die erste Wahl. Je nach Fall muss entschieden werden, ob nicht besser ein anderes _IaC_-Tool zum Einsatz kommen soll.
