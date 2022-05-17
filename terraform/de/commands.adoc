@@ -6,19 +6,71 @@ Zum Schluss möchte ich noch eine kurze Einführung geben, wie man Terraform CLI
 
 `terraform init` muss vor der eigentlich Ausführung gestartet werden.
 
-Im ersten Schritt installiert Terraform Module in das lokale Verzeichnis. Im Anschluss wird das lokale Backend initialisiert -- es gibt zahlreiche auch Cloud-basierende Backends. Als nächstes lädt Terraform Provider in das lokale Verzeichnis. Zum Schluss wird eine _Lock_-Datei `.terraform.lock.hcl`, in der Provider-Metainformationen hinterlegt sind, erzeugt.
+Im ersten Schritt installiert Terraform Module in das lokale Verzeichnis. Im Anschluss wird das lokale Backend initialisiert -- es gibt zahlreiche auch Cloud-basierende Backends. Als nächstes lädt Terraform Provider aus der Registry `https://registry.terraform.io/` in das lokale Verzeichnis. Zum Schluss wird eine _Lock_-Datei `.terraform.lock.hcl`, in der Provider-Metainformationen hinterlegt sind, erzeugt.
 
-Die Konfiguration lässt sich abschließend mit einem `terraform validate` überprüfen.
+Die Konfiguration lässt sich optional mit einem `terraform validate` überprüfen.
 
 == Plan
 
-Um eine Vorschau zu erhalten, welche Änderungen Terraform ausführt, hält die CLI das Kommando `plan` bereit. Der Plan lässt sich in binärer Form in eine Datei umleiten: `terraform plan -out myplan`. Eine lesbare _JSON_-Ausgabe des erstellten Planes erhält man durch `terraform show -json myplan`. Dieser Schritt ist optional -- die Änderungen werden auch mit dem Kommando `apply` ausgegeben.
+Um eine Vorschau zu erhalten, welche Änderungen Terraform ausführt, hält die CLI das Kommando `plan` bereit. Der Plan lässt sich in binärer Form in eine Datei umleiten: `terraform plan -out myplan`. Eine lesbare _JSON_-Ausgabe des erstellten Planes erhält man durch `terraform show -json myplan`. Dieser Schritt ist optional -- die Änderungen werden auch mit dem Kommando `apply` ausgegeben. Im Wesentlichen handelt es sich hierbei um einen "Dry-Run".
 
 == Apply
 
-Die Konfiguration kann nun, falls keine Fehler gefunden wurden, angewandt werden. Dafür steht das Kommando `apply` bereit.
+Die Konfiguration kann nun durch das Kommando `apply` angewandt werden.
 
 `terraform apply myplan` zeigt den Änderungsplan an und fordert den Entwickler auf, mit "yes" die Änderungen zu bestätigen. Andere Benutzereingaben führen zum Abbruch.
+
+[source,json]
+----
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated
+with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # docker_container.nginx will be created
+  + resource "docker_container" "nginx" {
+
+      ...
+
+      + name             = "nginx-demo"
+      
+      ...
+
+      + healthcheck {
+          + interval     = (known after apply)
+          + retries      = (known after apply)
+          + start_period = (known after apply)
+          + test         = (known after apply)
+          + timeout      = (known after apply)
+        }
+
+      + labels {
+          + label = (known after apply)
+          + value = (known after apply)
+        }
+    }
+
+  # docker_image.nginx will be created
+  + resource "docker_image" "nginx" {
+      + id          = (known after apply)
+      + latest      = (known after apply)
+      + name        = "nginx:1.21.6-alpine"
+      + output      = (known after apply)
+      + repo_digest = (known after apply)
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + nginx_image = (known after apply)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value:
+----
 
 == Destroy
 
@@ -26,4 +78,71 @@ Eine vorhandene Infrastruktur kann auch wieder abgebaut bzw. zerstört werden:
 
 `terraform destroy`
 
-Terraform fordert genau wie bei `apply` zur Bestätigung dieses Schritts auf durch ein "yes" auf.
+Terraform zeigt an, was abgebaut wird und fordert genau wie bei `apply` zur Bestätigung dieses Schritts durch ein "yes" auf.
+
+[source,json]
+----
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated
+with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # docker_container.nginx will be destroyed
+  - resource "docker_container" "nginx" {
+      - attach            = false -> null
+      - command           = [
+          - "nginx",
+          - "-g",
+          - "daemon off;",
+        ] -> null
+
+      ...
+
+      - entrypoint        = [
+          - "/docker-entrypoint.sh",
+        ] -> null
+      - env               = [] -> null
+      - gateway           = "172.17.0.1" -> null
+      - group_add         = [] -> null
+      - hostname          = "be3fbc6581db" -> null
+      - id                = "be3fbc6581db..." -> null
+      - image             = "sha256:674e6760e55a..." -> null
+
+      ...
+
+      - name              = "nginx-demo" -> null
+      - network_data      = [
+          - {
+              - gateway                   = "172.17.0.1"
+              - global_ipv6_address       = ""
+              - global_ipv6_prefix_length = 0
+              - ip_address                = "172.17.0.2"
+              - ip_prefix_length          = 16
+              - ipv6_gateway              = ""
+              - network_name              = "bridge"
+            },
+        ] -> null
+
+       ...
+    }
+
+  # docker_image.nginx will be destroyed
+  - resource "docker_image" "nginx" {
+      - id          = "sha256:674e6760e55a...nginx:1.21.6-alpine" -> null
+      - latest      = "sha256:674e6760e55a..." -> null
+      - name        = "nginx:1.21.6-alpine" -> null
+      - repo_digest = "nginx@sha256:5a0df7fb7c8c..." -> null
+    }
+
+Plan: 0 to add, 0 to change, 2 to destroy.
+
+Changes to Outputs:
+  - nginx_image = "nginx:1.21.6-alpine (nginx@sha256:5a0df7fb7c8c...)" -> null
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value:
+----

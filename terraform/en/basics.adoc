@@ -1,15 +1,15 @@
 = Terraform Basics
 
-A Terraform Script consists of only a few elements. These can be learned quite quickly. The syntax which is very similar to _JSON_ is not difficult either.
+A Terraform script consists of only a few elements. These can be learned quite quickly since the syntax is very similar to _JSON_.
 
-Essentially, a working script is made up of just two elements: one or more _Providers_ and the _Resources_. More complicated scripts contain _Data_ and other elements. To get a more meaningful output there is _Output_. The _Variable_ element is used to keep a Terraform script free of hard-coded values.
+Essentially, a working script is made up of just two elements: one or more _providers_ and the _resources_. More complicated scripts contain _data_ and other elements. To get a more meaningful output there is _output_. The `variable` element is used to keep a Terraform script free of hard-coded values.
 
 In the following I will briefly introduce these elements.
 
 == HCL
 
-But first, a very brief introduction to the *HashiCorp Configuration Language*. As said at the beginning, the language is closely related to _JSON_. A Terraform script could be written just as well with _JSON_, although the effort is higher.
-A block within a script consists of a header and a body. The header is structured as follows:
+But first, an introduction to the *HashiCorp Configuration Language*. As said at the beginning, the language is closely related to _JSON_. A Terraform script could be written just as well with _JSON_, although the effort is higher.
+A block within a script consists of a header and a body. The header of a _resource_ element is structured as follows:
 
 ```
 <BLOCK TYPE> "<BLOCK LABEL>" "<BLOCK LABEL>"
@@ -38,7 +38,7 @@ Nested blocks can be written much more compactly in _HCL_ than with _JSON_, as w
 
 == Providers
 
-A Terraform Script must specify which providers it requires. A provider can be thought of as an API. Without a provider, Terraform cannot manage any infrastructure. Providers therefore interact with a cloud or on-premise infrastructure. The configuration of a provider must be in the _root_ directory. The required providers and the version must also be located there. Here is a short and incomplete example:
+A Terraform Script must specify which providers it requires. A provider can be thought of as an API. Without a provider, Terraform cannot manage any infrastructure. Providers therefore interact with a cloud or on-premise infrastructure. The configuration of a provider must be in the project's root directory. The required providers and the version must also be located there. Here is a short and incomplete example:
 
 ```json
 terraform {
@@ -102,12 +102,12 @@ output "top_secret" {
 
 [TIP]
 ====
-Best practice is to put the _Output_ blocks in a separate file `outputs.tf`.
+Best practice is to put the _Output_ blocks in a separate file `outputs.tf`, otherwise the main file would grow too much and the configuration is more structured.
 ====
 
 == Variables
 
-A variable (also known as _Input Variable_) makes it possible to adapt Terraform scripts without modifying the source code (i.e. the script itself). This also prevents you from working with hardcoded values. In programming languages a Terraform variable is more like a constant. By default, variables should be stored in a `variables.tf` file.
+A variable (also _input variable_) enables parameterization of scripts. A terraform variable is more like a constant (or "environment variable") in programming languages because it is only evaluated at the beginning of an execution. By default, variables are stored in a `variables.tf` file.
 
 [source,json]
 ----
@@ -128,10 +128,10 @@ variable "homer" {
 * map(_<TYPE>_)
 * tuple([_<TYPE>_, _<TYPE>_, ...])
 * object({_<ATTRIBUTE NAME>_ = _<TYPE>_})
-<2> A meaningful description is never wrong and it's best practice to let other contributors know what this is about.
+<2> A meaningful description is best practice.
 <3> `sensitive`: ist not strictly required. `true` means a value it should be masked.
-<4> `nullable`: is not strictly required. As the name suggests, determines whether a value can be omitted.
-<5> `default` is not strictly required. However, the developer is prompted for a value for _doh_ each time the script is run. If you do not want to set a default value here, a file must be created.
+<4> `nullable` determines whether a value can be omitted.
+<5> `default` is optional, pre-assigns the _homer_ parameter so that it no longer needs to be specified at run time. If you don't want to set a default value here, a file with the extension `.tfvars` must be created.
 
 [source,text]
 .terraform.tfvars
@@ -143,7 +143,7 @@ In addition, inputs can be validated by a developer. There are a variety of func
 
 [NOTE]
 ====
-To refer to variables, precede the variable name with a `var` -- not `vars` or `variable` as one might assume. In our case it looks like this: `var.doh`
+To refer to variables, precede the variable name with a `var` -- not `vars` or `variable` as one might assume. In our case it looks like this: `var.homer`
 ====
 
 === Local Values
